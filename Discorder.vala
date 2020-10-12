@@ -23,13 +23,16 @@ public class Discorder : Window {
     
     private WebView web_view;
     private ToolButton _discorder_button; /* As a home button */
-
+    private ToolButton _discorder_trash; /* Clear cookies, datas */
+    
+    private Gtk.Label _trash = new Gtk.Label("🗑");
+    
 	private HeaderBar headerBar;
 	
 	private WebContext webContext;
 	private CookieManager cookieManager;
 	
-	private string cookie_data = GLib.Environment.get_home_dir();
+	private string cookie_data = GLib.Environment.get_home_dir() + "/.config/discorder/cookies.discorder";
 	
 	public Discorder() {
     	headerBar = new HeaderBar();
@@ -59,9 +62,10 @@ public class Discorder : Window {
         Gtk.Image img = new Gtk.Image.from_file("/usr/share/pixmaps/discorder/discorder_32.png");
 		this._discorder_button = new Gtk.ToolButton(img, null);
         
+        this._discorder_trash = new Gtk.ToolButton(_trash, null);
         
 		headerBar.pack_start(this._discorder_button);
-
+		headerBar.pack_end(this._discorder_trash);
         
         this.set_titlebar(headerBar);
  
@@ -87,12 +91,37 @@ public class Discorder : Window {
         this.destroy.connect(Gtk.main_quit);
         
         this._discorder_button.clicked.connect(discorder_button);
+    	this._discorder_button.clicked.connect(discorder_trash);
     }
 
 	private void discorder_button() {
 		this.web_view.load_uri(DEFAULT_URL);
 	}
 
+	private void discorder_trash() {
+		if(IsExist(GLib.Environment.get_home_dir() + "/.config/discorder/cookies.discorder") == true) {
+			AddText(GLib.Environment.get_home_dir() + "/.config/discorder/cookies.discorder", "");
+		}
+		
+		this.web_view.load_uri(DEFAULT_URL);
+	}
+	
+	public bool IsExist(string _directory) {
+    	if (GLib.FileUtils.test(_directory, GLib.FileTest.EXISTS)) {
+			return true;
+		}
+		
+		return false;
+    }
+	
+	public void AddText(string _directory, string data) {
+		try {
+			FileUtils.set_contents(_directory, data);
+		} catch(Error e) {
+    	  	stderr.printf ("Error: %s\n", e.message);
+		}
+	}
+	
     public void start() {
         show_all();
         this.web_view.load_uri(DEFAULT_URL);
