@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Discorder
+Exec=discorder
+Icon=/usr/share/pixmaps/discorder/discorder.png
+Type=Application
+Keywords=web;browser;internet;
+Categories=GTK;GNOME;Network;Web;
+Terminal=false
