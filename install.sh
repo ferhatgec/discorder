@@ -1,12 +1,13 @@
 #!/bin/sh
 
+
+mkdir $HOME/.config/discorder/
+
 # Required Vala to C compiler, GTK3 library, WebKit2GTK(devel) and GCC (or Clang).
-valac --pkg gtk+-3.0 --pkg webkit2gtk-4.0 Discorder.vala -o /bin/discorder
+sudo valac --pkg gtk+-3.0 --pkg webkit2gtk-4.0 Discorder.vala -o /bin/discorder
 
-mkdir /usr/share/pixmaps/discorder/
+sudo mkdir /usr/share/pixmaps/discorder/
 
-mkdir /home/$USERNAME/.config/discorder/
+sudo cp resource/*.png /usr/share/pixmaps/discorder/
 
-cp resource/*.png /usr/share/pixmaps/discorder/
-
-cp discorder.desktop /usr/share/applications/
+sudo cp discorder.desktop /usr/share/applications/
